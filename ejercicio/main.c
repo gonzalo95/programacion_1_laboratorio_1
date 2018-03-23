@@ -13,7 +13,7 @@
 
 int main()
 {
-    int num, maxPar, cantPares, cantImpares, sumaPos, sumaNeg, cantEntre, max, min, cantPos, cantNeg;
+    int num, maxPar, cantPares, cantImpares, cantEntre, max, min, cantPos, cantNeg, cantTotal;
 
     printf("Ingrese un numero \n");
     scanf("%d", &num);
@@ -23,11 +23,12 @@ int main()
     cantEntre = 0;
     cantPos = 0;
     cantNeg = 0;
-    sumaPos = 0;
-    sumaNeg = 0;
+    cantTotal = 0;
 
     while (num != 0)
     {
+        cantTotal++;
+
         if (cantPares == 0 && cantImpares == 0){
             max = num;
             min = num;
@@ -47,20 +48,15 @@ int main()
             cantImpares++;
         }
 
-        if (num < 0){
-            cantNeg++;
-            sumaNeg += num;
-        }
-        else{
-            cantPos++;
-            sumaPos += num;
-        }
+        if (num < 0) cantNeg++;
+
+        else cantPos++;
 
 
         scanf("%d", &num);
     }
 
-    printf("%d --- %d --- %.2f --- %.2f --- %d --- %d --- %d --- %d", cantPares, cantImpares, sumaPos / cantPos, sumaNeg / cantNeg, cantEntre, max, min, maxPar);
+    printf("%d --- %d --- %d --- %d --- %d --- %d --- %d --- %d", cantPares, cantImpares, (cantPos * 100) / cantTotal, (cantNeg * 100) / cantTotal, cantEntre, max, min, maxPar);
 
     return 0;
 }
