@@ -6,7 +6,8 @@ int buscarLibre(int[], int);
 void mostrarAlumnos(int[], char[][20], int[], int[], float[], int);
 float calcularPromedio(int, int);
 int cargarAlumno(int[], char[][20], int[], int[], float[], int);
-void cargarDatos(int[], char[][20], int[], int[], float[], int, int);
+void pedirDatos(int[], char[][20], int[], int[], float[], int, int);
+int buscarAlumno(int num, int* legajo, int);
 
 int main()
 {
@@ -17,8 +18,7 @@ int main()
     float promedio[TAM];
     int opcion;
     int index;
-    int i;
-    int padronAux;
+    int legajoAux;
 
     do
     {
@@ -29,15 +29,14 @@ int main()
         {
         case 1:
 
-            index=cargarAlumno(legajo, nombre, nota1, nota2, promedio, TAM);
+            index = cargarAlumno(legajo, nombre, nota1, nota2, promedio, TAM);
+
             if(index == -1)
-            {
                 printf("No hay lugar\n");
-            }
+
             else
-            {
                 printf("Alumno ingresado\n");
-            }
+
             break;
 
         case 2:
@@ -46,17 +45,35 @@ int main()
         break;
 
         case 3:
-            printf("Padron: ");
-            scanf("%d", padronAux);
-            if (modificarAlumno(legajo, nombre, nota1, nota2, promedio, TAM, padronAux) == -1)
-                printf("Padron inexistente");
+
+            printf("Legajo: ");
+            scanf("%d", &legajoAux);
+            index = buscarAlumno(legajoAux, legajo, TAM);
+
+            if(index == -1)
+                printf("Alumno inexistente\n");
             else
-                printf("Alumno modificado");
+            {
+                pedirDatos(legajo, nombre, nota1, nota2, promedio, TAM, index);
+                printf("Alumno modificado\n");
+            }
 
             break;
 
         case 4:
+
             printf("Padron: ");
+            scanf("%d", &legajoAux);
+            index = buscarAlumno(legajoAux, legajo, TAM);
+
+            if(index == -1)
+                printf("Alumno inexistente\n");
+            else
+            {
+                legajo[index] = 0;
+                printf("Registro borrado\n");
+            }
+
             break;
 
         case 5:
@@ -64,29 +81,26 @@ int main()
 
         case 9:
             opcion = 9;
+            printf("Programa finalizado");
             break;
 
         default:
             printf("Opcion invalida\n");
             break;
 
+        }
     }
-    }
-    while(opcion!=9);
-
-
-
-
+    while(opcion != 9);
     return 0;
 }
 
-int buscarLibre(int legajos[], int tam)
+int buscarLibre(int legajo[], int tam)
 {
-    int index=-1;
+    int index = -1;
     int i;
     for(i = 0; i < tam; i++)
     {
-        if(legajos[i] == 0)
+        if(legajo[i] == 0)
             {
             index = i;
             break;
@@ -95,14 +109,14 @@ int buscarLibre(int legajos[], int tam)
     return index;
 }
 
-int cargarAlumno(int legajos[], char nombres[][20], int nota1[], int nota2[], float promedio[], int tam)
+int cargarAlumno(int legajo[], char nombre[][20], int nota1[], int nota2[], float promedio[], int tam)
 {
     int index ;
-    index = buscarLibre(legajos, tam);
-    if(index!=-1)
-    {
-        cargarDatos(legajos, nombres, nota1, nota2, promedio, tam, index);
-    }
+    index = buscarLibre(legajo, tam);
+
+    if(index != -1)
+        pedirDatos(legajo, nombre, nota1, nota2, promedio, tam, index);
+
     return index;
 }
 
@@ -110,49 +124,47 @@ int cargarAlumno(int legajos[], char nombres[][20], int nota1[], int nota2[], fl
 float calcularPromedio(int nota1, int nota2)
 {
     float promedio;
-    promedio = (float)(nota1+nota2)/2;
+    promedio = (float)(nota1 + nota2) / 2;
     return promedio;
 }
 
-void mostrarAlumnos(int legajos[], char nombres[][20], int nota1[], int nota2[], float promedio[], int tam)
+void mostrarAlumnos(int legajo[], char nombre[][20], int nota1[], int nota2[], float promedio[], int tam)
 {
-    int i;
-    for(i=0; i<tam; i++)
-    {
-        if(legajos[i]!=0)
-            printf("%d %s %d %d %f\n", legajos[i], nombres[i], nota1[i], nota2[i], promedio[i]);
-    }
-}
-
-void cargarDatos(int legajos[], char nombres[][20], int nota1[], int nota2[], float promedio[], int tam, int index)
-{
-        printf("Nombre: ");
-        fflush(stdin);
-        gets(nombres[index]);
-        printf("Legajo: ");
-        scanf("%d", &legajos[index]);
-        printf("1era nota: ");
-        scanf("%d", &nota1[index]);
-        printf("2da nota: ");
-        scanf("%d", &nota2[index]);
-        promedio[index] = calcularPromedio(nota1[index], nota2[index]);
-}
-
-int modificarAlumno(int legajos[], char nombres[][20], int nota1[], int nota2[], float promedio[], int tam, int id)
-{
-    int index=-1;
     int i;
     for(i = 0; i < tam; i++)
     {
-        if(legajos[i] == id)
-            {
+        if(legajo[i] != 0)
+            printf("Legajo: %d\n Nombre: %s\n 1er nota: %d\n 2da nota: %d\n Promedio: %f\n", legajo[i], nombre[i], nota1[i], nota2[i], promedio[i]);
+    }
+}
+
+void pedirDatos(int legajo[], char nombre[][20], int nota1[], int nota2[], float promedio[], int tam, int index)
+{
+    printf("Nombre: ");
+    fflush(stdin);
+    gets(nombre[index]);
+    printf("Legajo: ");
+    scanf("%d", &legajo[index]);
+    printf("1era nota: ");
+    scanf("%d", &nota1[index]);
+    printf("2da nota: ");
+    scanf("%d", &nota2[index]);
+    promedio[index] = calcularPromedio(nota1[index], nota2[index]);
+}
+
+int buscarAlumno(int alumno, int* legajo, int len)
+{
+    int i;
+    int index = -1;
+    for(i = 0; i < len; i++)
+    {
+        if(legajo[i] == alumno)
+        {
             index = i;
             break;
-            }
+        }
     }
-    if(index!=-1)
-        cargarDatos(legajos, nombres, nota1, nota2, promedio, tam, index);
-
     return index;
 }
+
 
