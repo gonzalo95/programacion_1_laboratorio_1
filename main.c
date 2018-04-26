@@ -8,6 +8,7 @@ float calcularPromedio(int, int);
 int cargarAlumno(int[], char[][20], int[], int[], float[], int);
 void pedirDatos(int[], char[][20], int[], int[], float[], int, int);
 int buscarAlumno(int num, int* legajo, int);
+void ordenarNombre(char [][20], int , int *, int *, int *, float*);
 
 int main()
 {
@@ -77,6 +78,10 @@ int main()
             break;
 
         case 5:
+
+            ordenarNombre(nombre, TAM, legajo, nota1, nota2, promedio);
+            mostrarAlumnos(legajo, nombre, nota1, nota2, promedio, TAM);
+
             break;
 
         case 9:
@@ -166,5 +171,47 @@ int buscarAlumno(int alumno, int* legajo, int len)
     }
     return index;
 }
+
+void ordenarNombre(char nombre[][20], int len, int *legajo, int *nota1, int *nota2, float *promedio)
+{
+    int i;
+    int j;
+    char aux[20];
+    int legajoAux;
+    int nota2Aux;
+    int nota1Aux;
+    float promedioAux;
+
+    for(i = 0; i < len - 1; i++)
+    {
+        for(j = i + 1; j < len; j++)
+        {
+            if(stricmp(nombre[i], nombre[j]) > 0)
+            {
+                strcpy(aux, nombre[i]);
+                strcpy(nombre[i], nombre[j]);
+                strcpy(nombre[j], aux);
+                //break;
+
+                legajoAux = legajo[i];
+                legajo[i] = legajo[j];
+                legajo[j] = legajoAux;
+
+                nota1Aux = nota1[i];
+                nota1[i] = nota1[j];
+                nota1[j] = nota1Aux;
+
+                nota2Aux = nota2[i];
+                nota2[i] = nota2[j];
+                nota2[j] = nota2Aux;
+
+                promedioAux = promedio[i];
+                promedio[i] = promedio[j];
+                promedio[j] = promedioAux;
+            }
+        }
+    }
+}
+
 
 

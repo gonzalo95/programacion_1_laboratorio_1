@@ -6,7 +6,7 @@
 float calcularPromedio(int, int);
 void mostrarAlumno(int*, char[3][30], int*, int*, float*, int);
 int buscarAlumno(int num, int* legajo, int);
-void ordenarNombre(char **, int, int *, int *, int *);
+void ordenarNombre(char [][30], int, int *, int *, int *);
 
 int main()
 {
@@ -14,7 +14,7 @@ int main()
     char nombre[LEN][30] = {"juan", "ana", "maria", "marcelo"};
     int nota1[LEN] = {1, 2 ,3 ,4};
     int nota2[LEN] = {1, 2 ,3 ,4};
-    float promedio[LEN];
+    float promedio[LEN] = {1, 2 ,3 ,4};
     int i;
     int alumno;
 
@@ -34,13 +34,11 @@ int main()
         printf("promedio: %.2f\n", promedio[i]);
     }
     */
-    printf("\n");
 
     mostrarAlumno(legajo, nombre, nota1, nota2, promedio, LEN);
-
-    printf("alumno: ");
-    scanf("%d", &alumno);
-    printf("posicion: %d", buscarAlumno(alumno, legajo, LEN));
+    printf("\n");
+    ordenarNombre(nombre, 4, legajo, nota1, nota2);
+    mostrarAlumno(legajo, nombre, nota1, nota2, promedio, 4);
 
     return 0;
 }
@@ -75,22 +73,37 @@ int buscarAlumno(int alumno, int* legajo, int len)
     return index;
 }
 
-void ordenarNombre(char **nombre, int len, int *legajo, int *nota1, int *nota2)
+void ordenarNombre(char nombre[][30], int len, int *legajo, int *nota1, int *nota2)
 {
     int i;
     int j;
-    char aux[len];
+    char aux[30];
+    int legajoAux;
+    int nota2Aux;
+    int nota1Aux;
 
     for(i = 0; i < len - 1; i++)
     {
-        for(j = 1; j < len; j++)
+        for(j = i + 1; j < len; j++)
         {
-            if(stricmp(nombre[i], nombre[j]) > 0) //criterio de ordenamiento
+            if(stricmp(nombre[i], nombre[j]) > 0)
             {
                 strcpy(aux, nombre[i]);
                 strcpy(nombre[i], nombre[j]);
                 strcpy(nombre[j], aux);
+                //break;
 
+                legajoAux = legajo[i];
+                legajo[i] = legajo[j];
+                legajo[j] = legajoAux;
+
+                nota1Aux = nota1[i];
+                nota1[i] = nota1[j];
+                nota1[j] = nota1Aux;
+
+                nota2Aux = nota2[i];
+                nota2[i] = nota2[j];
+                nota2[j] = nota2Aux;
             }
         }
     }
