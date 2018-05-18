@@ -1,0 +1,3 @@
+Esto es un texte dentro del fichero.
+Esto es un texto dentro del fichero.
+Esto es otro texto dentro del fichero. Y el buffer

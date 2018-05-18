@@ -1,0 +1,14 @@
+git clone repo
+
+cd el directorio del repo
+
+git status
+//si aparece en rojo -> git add .
+
+git commit -m "msj"
+
+.
+.
+.
+
+git push origin master -f
